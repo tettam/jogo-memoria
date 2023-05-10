@@ -9,12 +9,12 @@ const App = () => {
           <Component.LogoLink hred="">
             <img src={logoImage} width='200' alt=''/>
           </Component.LogoLink>
+          ...
         </Component.Info>
         <Component.InfoArea>
-          
         </Component.InfoArea>
-        <Component.GridArea>
-            
+        <Component.GridArea>    
+          ...
         </Component.GridArea>
       </Component.Container>
     </>
