@@ -1,12 +1,11 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  width: 100px;
+  width: 100%;
   max-width: 750px;
   margin: auto;
   display: flex;
   padding: 50px 0;
-
 
   @media (max-width: 750px) {
     flex-direction: column;
@@ -49,3 +48,10 @@ justify-content: flex-end;
   margin: 0 20px;
 }
 `
+
+export const Grid = styled.div`
+  width: 450px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+`;
