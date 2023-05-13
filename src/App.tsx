@@ -20,6 +20,26 @@ const App = () => {
   useEffect(() =>  resetAndCreatGrid(), [])
 
   useEffect(() => {
+    if(shownCount === 2){
+      let opened = gridItems.filter((item) => item.shown === true);
+      if(opened.length === 2) {
+
+        if(opened[0].item === opened[1].item) {
+          let tempGrid = [...gridItems];
+          for(let i in tempGrid){
+            if(tempGrid[i].shown) {
+              tempGrid[i].permanentShown = true;
+              tempGrid[i].shown = false;
+            }
+          }
+          setGridItems(tempGrid);
+          setShownCount(0);
+        }
+      }
+    }
+  }, [shownCount , gridItems])
+
+  useEffect(() => {
     const timer = setInterval(() => {
       if(playing) setLTimeElapsed(timeElapsed + 1);
     },1000);
@@ -60,8 +80,17 @@ const App = () => {
     setPlaying(true)
   }
   
-  const handleItemClick = () => {
-    console.log('ok')
+  const handleItemClick = (index: number) => {
+    if(playing && index !== null && shownCount < 2) {
+      let tmpGrid = [...gridItems]
+
+      if(tmpGrid[index].permanentShown === false && tmpGrid[index].shown === false){
+        tmpGrid[index].shown = true;
+        setShownCount(shownCount + 1);
+      }
+
+      setGridItems(tmpGrid);
+    }
   }
 
   return (
@@ -74,7 +103,7 @@ const App = () => {
 
           <Component.InfoArea>
             <InfoItem label='Tempo' value={formatTimeElapsed(timeElapsed)} />
-            <InfoItem label='Movimentos' value=' 0'/>
+            <InfoItem label='Movimentos' value={shownCount.toString()}/>
           </Component.InfoArea>  
 
         <Button label='Reiniciar' icon={RestartIcon} onClick={resetAndCreatGrid}/>
