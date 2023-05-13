@@ -22,8 +22,9 @@ const App = () => {
   useEffect(() => {
     if(shownCount === 2){
       let opened = gridItems.filter((item) => item.shown === true);
-      if(opened.length === 2) {
 
+      if(opened.length === 2) {
+      
         if(opened[0].item === opened[1].item) {
           let tempGrid = [...gridItems];
           for(let i in tempGrid){
@@ -34,7 +35,18 @@ const App = () => {
           }
           setGridItems(tempGrid);
           setShownCount(0);
+        } else {
+          setTimeout(() => {
+            let tempGrid = [...gridItems];
+            for(let i in tempGrid) {
+              tempGrid[i].shown = false;
+            }
+            setGridItems(tempGrid);
+            setShownCount(0);
+          }, 1000);
         }
+        
+        setMovieCount(movieCount => movieCount + 1);
       }
     }
   }, [shownCount , gridItems])
@@ -45,6 +57,12 @@ const App = () => {
     },1000);
     return () => clearInterval(timer);
   }, [playing, timeElapsed])
+
+  useEffect(() => {
+    if(movieCount > 0 && gridItems.every(item => item.permanentShown === true)){
+      setPlaying(false);
+    }
+  }, [movieCount, gridItems])
 
   const resetAndCreatGrid = () => {
     setLTimeElapsed(0);
