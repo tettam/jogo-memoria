@@ -7,6 +7,7 @@ import { GridItem } from './components/GridItem';
 import { useEffect , useState } from 'react';
 import { GridItemType } from './types/GridItemType';
 import { Items } from './data/Items';
+import { formatTimeElapsed } from './helpers/formatTimeElapsed';
 
 const App = () => {
 
@@ -18,6 +19,13 @@ const App = () => {
 
   useEffect(() =>  resetAndCreatGrid(), [])
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if(playing) setLTimeElapsed(timeElapsed + 1);
+    },1000);
+    return () => clearInterval(timer);
+  }, [playing, timeElapsed])
+
   const resetAndCreatGrid = () => {
     setLTimeElapsed(0);
     setMovieCount(0);
@@ -28,7 +36,7 @@ const App = () => {
     for(let i = 0; i < (Items.length * 2); i++){
       tempGrid.push({
         item: null,
-        shown: true,
+        shown: false,
         permanentShown: false
       })
     }
@@ -46,11 +54,12 @@ const App = () => {
 
     //Jogar  no state
     setGridItems(tempGrid);
+    console.log(gridItems)
 
     //Começar jogo
     setPlaying(true)
   }
-
+  
   const handleItemClick = () => {
     console.log('ok')
   }
@@ -64,7 +73,7 @@ const App = () => {
           </Component.LogoLink>
 
           <Component.InfoArea>
-            <InfoItem label='Tempo' value='00:00' />
+            <InfoItem label='Tempo' value={formatTimeElapsed(timeElapsed)} />
             <InfoItem label='Movimentos' value=' 0'/>
           </Component.InfoArea>  
 
